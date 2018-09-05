@@ -7,4 +7,4 @@ Nicole Cheung (PiPi),
 Mel (BaryonL)
 
 ### Description
-A team project for mailing system
+A team project for mailing system SWEN30006
