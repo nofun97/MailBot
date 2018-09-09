@@ -24,7 +24,7 @@ public abstract class Robot implements RobotBehaviour {
     private IMailPool mailPool;
     private boolean receivedDispatch;
     private boolean strong; // not this one.
-    
+    private int maxItems;
     private MailItem deliveryItem;
     
     private int deliveryCounter;
@@ -49,6 +49,7 @@ public abstract class Robot implements RobotBehaviour {
         this.receivedDispatch = false;
         this.strong = strong;
         this.deliveryCounter = 0;
+        maxItems = 4;
     }
     
     public void dispatch() {
@@ -97,7 +98,7 @@ public abstract class Robot implements RobotBehaviour {
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(deliveryItem);
                     deliveryCounter++;
-                    if(deliveryCounter > 4){  // Implies a simulation bug
+                    if(deliveryCounter > maxItems){  // Implies a simulation bug
                     	throw new ExcessiveDeliveryException();
                     }
                     /** Check if want to return, i.e. if there are no more items in the tube*/
@@ -205,6 +206,14 @@ public abstract class Robot implements RobotBehaviour {
 
     public void setDeliveryCounter(int deliveryCounter) {
         this.deliveryCounter = deliveryCounter;
+    }
+
+    public int getMaxItems() {
+        return maxItems;
+    }
+
+    public void setMaxItems(int maxItems) {
+        this.maxItems = maxItems;
     }
 
     @Override
