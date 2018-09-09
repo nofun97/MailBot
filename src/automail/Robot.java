@@ -42,7 +42,7 @@ public abstract class Robot implements RobotBehaviour {
         // current_state = RobotState.WAITING;
     	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
-        tube = new StorageTube(capacity);
+        tube = new StorageTube();
         this.delivery = delivery;
         this.mailPool = mailPool;
         this.receivedDispatch = false;

@@ -43,6 +43,10 @@ public class CarefulRobot extends Robot{
                 }
             case WAITING:
                 /** If the StorageTube is ready and the Robot is waiting in the mailroom then start the delivery */
+                if (careful){
+                    changeState(RobotState.DELIVERING);
+                    break;
+                }
                 if(!tube.isEmpty() && isReceivedDispatch()){
                     setReceivedDispatch(false);
                     setDeliveryCounter(0); // reset delivery counter
@@ -63,6 +67,7 @@ public class CarefulRobot extends Robot{
                     /** Check if want to return, i.e. if there are no more items in the tube*/
                     if(tube.isEmpty()){
                         changeState(RobotState.RETURNING);
+                        careful = false;
                     }
                     else{
                         /** If there are more items, set the robot's route to the location to deliver the item */
@@ -72,6 +77,7 @@ public class CarefulRobot extends Robot{
                 } else {
                     /** The robot is not at the destination yet, move towards it! */
                     moveTowards(getDestination_floor());
+                    careful = true;
                     changeState(RobotState.WAITING);
                 }
                 break;
