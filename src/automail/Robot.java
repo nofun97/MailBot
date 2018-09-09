@@ -120,7 +120,7 @@ public class Robot {
     /**
      * Sets the route for the robot
      */
-    private void setRoute() throws ItemTooHeavyException{
+    public void setRoute() throws ItemTooHeavyException{
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
         if (!strong && deliveryItem.weight > 2000) throw new ItemTooHeavyException(); 
@@ -132,7 +132,7 @@ public class Robot {
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
      */
-    private void moveTowards(int destination) throws FragileItemBrokenException {
+    public void moveTowards(int destination) throws FragileItemBrokenException {
         if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
         if(current_floor < destination){
             current_floor++;
@@ -150,7 +150,7 @@ public class Robot {
      * Prints out the change in state
      * @param nextState the state to which the robot is transitioning
      */
-    private void changeState(RobotState nextState){
+    public void changeState(RobotState nextState){
     	if (current_state != nextState) {
             System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
     	}
@@ -167,7 +167,43 @@ public class Robot {
 	static private int count = 0;
 	static private Map<Integer, Integer> hashMap = new TreeMap<Integer, Integer>();
 
-	@Override
+    public IMailPool getMailPool() {
+        return mailPool;
+    }
+
+    public IMailDelivery getDelivery() {
+        return delivery;
+    }
+
+    public int getCurrent_floor() {
+        return current_floor;
+    }
+
+    public int getDestination_floor() {
+        return destination_floor;
+    }
+
+    public boolean isReceivedDispatch() {
+        return receivedDispatch;
+    }
+
+    public MailItem getDeliveryItem() {
+        return deliveryItem;
+    }
+
+    public int getDeliveryCounter() {
+        return deliveryCounter;
+    }
+
+    public void setReceivedDispatch(boolean receivedDispatch) {
+        this.receivedDispatch = receivedDispatch;
+    }
+
+    public void setDeliveryCounter(int deliveryCounter) {
+        this.deliveryCounter = deliveryCounter;
+    }
+
+    @Override
 	public int hashCode() {
 		Integer hash0 = super.hashCode();
 		Integer hash = hashMap.get(hash0);

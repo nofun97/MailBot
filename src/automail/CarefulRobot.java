@@ -1,9 +1,11 @@
 package automail;
 
 import exceptions.ExcessiveDeliveryException;
+import exceptions.FragileItemBrokenException;
+import exceptions.ItemTooHeavyException;
 import strategies.IMailPool;
 
-public class CarefulRobot extends Robot implements RobotBehaviour{
+public class CarefulRobot extends Robot{
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
@@ -17,19 +19,19 @@ public class CarefulRobot extends Robot implements RobotBehaviour{
     }
 
     @Override
-    public void step() {
-        switch(currentState) {
+    public void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException {
+        switch(current_state) {
             /** This state is triggered when the robot is returning to the mailroom after a delivery */
             case RETURNING:
                 /** If its current position is at the mailroom, then the robot should change state */
-                if(current_floor == Building.MAILROOM_LOCATION){
+                if(getCurrent_floor() == Building.MAILROOM_LOCATION){
                     while(!tube.isEmpty()) {
                         MailItem mailItem = tube.pop();
-                        mailPool.addToPool(mailItem);
+                        getMailPool().addToPool(mailItem);
                         System.out.printf("T: %3d > old addToPool [%s]%n", Clock.Time(), mailItem.toString());
                     }
                     /** Tell the sorter the robot is ready */
-                    mailPool.registerWaiting(this);
+                    getMailPool().registerWaiting(this);
                     changeState(RobotState.WAITING);
                 } else {
                     /** If the robot is not at the mailroom floor yet, then move towards it! */
@@ -38,20 +40,21 @@ public class CarefulRobot extends Robot implements RobotBehaviour{
                 }
             case WAITING:
                 /** If the StorageTube is ready and the Robot is waiting in the mailroom then start the delivery */
-                if(!tube.isEmpty() && receivedDispatch){
-                    receivedDispatch = false;
-                    deliveryCounter = 0; // reset delivery counter
+                if(!tube.isEmpty() && isReceivedDispatch()){
+                    setReceivedDispatch(false);
+                    setDeliveryCounter(0); // reset delivery counter
                     setRoute();
-                    mailPool.deregisterWaiting(this);
+                    getMailPool().deregisterWaiting(this);
                     changeState(RobotState.DELIVERING);
                 }
                 break;
             case DELIVERING:
-                if(current_floor == destination_floor){ // If already here drop off either way
+                if(getCurrent_floor() == getDestination_floor()){ // If already here drop off
+                    // either way
                     /** Delivery complete, report this to the simulator! */
-                    delivery.deliver(deliveryItem);
-                    deliveryCounter++;
-                    if(deliveryCounter > 4){  // Implies a simulation bug
+                    delivery.deliver(getDeliveryItem());
+                    setDeliveryCounter(getDeliveryCounter()+1);
+                    if(getDeliveryCounter() > 4){  // Implies a simulation bug
                         throw new ExcessiveDeliveryException();
                     }
                     /** Check if want to return, i.e. if there are no more items in the tube*/
@@ -65,9 +68,11 @@ public class CarefulRobot extends Robot implements RobotBehaviour{
                     }
                 } else {
                     /** The robot is not at the destination yet, move towards it! */
-                    moveTowards(destination_floor);
+                    moveTowards(getDestination_floor());
                 }
                 break;
         }
     }
+
+
 }
