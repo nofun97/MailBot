@@ -143,7 +143,7 @@ public abstract class Robot implements RobotBehaviour {
     }
     
     private String getIdTube() {
-    	return String.format("%s(%1d/%1d)", id, tube.getSize(), tube.MAXIMUM_CAPACITY);
+    	return String.format("%s(%1d/%1d)", id, tube.getSize(), getTube().getTubeSize());
     }
     
     /**

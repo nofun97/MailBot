@@ -16,6 +16,7 @@ public class BigRobot extends Robot{
      */
     public BigRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong) {
         super(delivery, mailPool, strong);
+        getTube().setTubeSize(6);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class BigRobot extends Robot{
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(getDeliveryItem());
                     setDeliveryCounter(getDeliveryCounter()+1);
-                    if(getDeliveryCounter() > 6){  // Implies a simulation bug
+                    if(getDeliveryCounter() > getTube().getTubeSize()){  // Implies a simulation bug
                         throw new ExcessiveDeliveryException();
                     }
                     /** Check if want to return, i.e. if there are no more items in the tube*/
