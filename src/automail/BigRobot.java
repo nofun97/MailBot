@@ -5,10 +5,7 @@ import exceptions.FragileItemBrokenException;
 import exceptions.ItemTooHeavyException;
 import strategies.IMailPool;
 
-public class CarefulRobot extends Robot{
-
-    private boolean careful = true;
-
+public class BigRobot extends Robot{
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
@@ -17,8 +14,9 @@ public class CarefulRobot extends Robot{
      * @param mailPool is the source of mail items
      * @param strong   is whether the robot can carry heavy items
      */
-    public CarefulRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong) {
+    public BigRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong) {
         super(delivery, mailPool, strong);
+        getTube().setTubeSize(6);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class CarefulRobot extends Robot{
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(getDeliveryItem());
                     setDeliveryCounter(getDeliveryCounter()+1);
-                    if(getDeliveryCounter() > 4){  // Implies a simulation bug
+                    if(getDeliveryCounter() > getTube().getTubeSize()){  // Implies a simulation bug
                         throw new ExcessiveDeliveryException();
                     }
                     /** Check if want to return, i.e. if there are no more items in the tube*/
@@ -72,9 +70,10 @@ public class CarefulRobot extends Robot{
                 } else {
                     /** The robot is not at the destination yet, move towards it! */
                     moveTowards(getDestination_floor());
-                    changeState(RobotState.WAITING);
                 }
                 break;
         }
     }
+
+
 }
