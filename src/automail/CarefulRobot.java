@@ -1,13 +1,11 @@
 package automail;
 
-import exceptions.ExcessiveDeliveryException;
 import exceptions.FragileItemBrokenException;
-import exceptions.ItemTooHeavyException;
 import strategies.IMailPool;
 
 public class CarefulRobot extends Robot{
 
-    private boolean careful = true;
+    private boolean isCareful = true;
 
     /**
      * Initiates the robot's location at the start to be at the mailroom
@@ -22,14 +20,14 @@ public class CarefulRobot extends Robot{
 
     @Override
     public void moveTowards(int destination) throws FragileItemBrokenException {
-        if(careful){
+        if(isCareful){
             setCurrent_floor(getCurrent_floor());
-            careful = false;
+            isCareful = false;
             return;
         }
         if(getCurrent_floor() < destination){
             setCurrent_floor(getCurrent_floor() + 1);
-            careful = true;
+            isCareful = true;
         }
         else{
             setCurrent_floor(getCurrent_floor() - 1);

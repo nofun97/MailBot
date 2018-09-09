@@ -11,6 +11,7 @@ import java.util.TreeMap;
  * The robot delivers mail!
  */
 public abstract class Robot implements RobotBehaviour {
+
     // we need extract the standard and weak robot, making four more new classes, make this class as abstract class.
 	StorageTube tube;
     IMailDelivery delivery;
