@@ -11,9 +11,8 @@ public class WeakRobot extends Robot {
      *
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
-     * @param strong   is whether the robot can carry heavy items
      */
-    public WeakRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong, int MAXIMUM_CAPACITY) {
-        super(delivery, mailPool, strong, MAXIMUM_CAPACITY);
+    public WeakRobot(IMailDelivery delivery, IMailPool mailPool) {
+        super(delivery, mailPool, false);
     }
 }

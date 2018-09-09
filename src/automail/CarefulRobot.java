@@ -15,10 +15,9 @@ public class CarefulRobot extends Robot{
      *
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
-     * @param strong   is whether the robot can carry heavy items
      */
-    public CarefulRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong) {
-        super(delivery, mailPool, strong);
+    public CarefulRobot(IMailDelivery delivery, IMailPool mailPool) {
+        super(delivery, mailPool, true);
     }
 
     @Override

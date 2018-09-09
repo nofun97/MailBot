@@ -14,8 +14,8 @@ public class BigRobot extends Robot{
      * @param mailPool is the source of mail items
      * @param strong   is whether the robot can carry heavy items
      */
-    public BigRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong) {
-        super(delivery, mailPool, strong);
+    public BigRobot(IMailDelivery delivery, IMailPool mailPool) {
+        super(delivery, mailPool, true);
         getTube().setTubeSize(6);
     }
 

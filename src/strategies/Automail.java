@@ -1,7 +1,6 @@
 package strategies;
 
-import automail.IMailDelivery;
-import automail.Robot;
+import automail.*;
 
 public class Automail {
 	      
@@ -20,10 +19,11 @@ public class Automail {
     	boolean strong = true; // Can handle any weight that arrives at the building
     	
     	/** Initialize robots */
-    	robot = new Robot[3];
-    	robot[0] = new Robot(delivery, mailPool, weak);
-    	robot[1] = new Robot(delivery, mailPool, strong);
-    	robot[2] = new Robot(delivery, mailPool, strong);
+    	robot = new Robot[4];
+    	robot[0] = new WeakRobot(delivery, mailPool);
+    	robot[1] = new StrongRobot(delivery, mailPool);
+    	robot[2] = new BigRobot(delivery, mailPool);
+    	robot[3] = new CarefulRobot(delivery, mailPool);
     }
     
 }

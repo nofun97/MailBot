@@ -2,18 +2,15 @@ package automail;
 
 import strategies.IMailPool;
 
-public class StandardRobot extends Robot {
-    public final int MAXIMUM_CAPACITY = 4;
-
+public class StrongRobot extends Robot{
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
      *
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
-     * @param strong   is whether the robot can carry heavy items
      */
-    public StandardRobot(IMailDelivery delivery, IMailPool mailPool) {
+    public StrongRobot(IMailDelivery delivery, IMailPool mailPool) {
         super(delivery, mailPool, true);
     }
 }
