@@ -159,7 +159,11 @@ public abstract class Robot implements RobotBehaviour {
     	}
     }
 
-	public StorageTube getTube() {
+    public void setCurrent_floor(int current_floor) {
+        this.current_floor = current_floor;
+    }
+
+    public StorageTube getTube() {
 		return tube;
 	}
     
