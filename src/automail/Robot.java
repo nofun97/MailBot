@@ -11,7 +11,7 @@ import java.util.TreeMap;
  * The robot delivers mail!
  */
 public class Robot {
-
+    // we need extract the standard and weak robot, making four more new classes, make this class as abstract class.
 	StorageTube tube;
     IMailDelivery delivery;
     protected final String id;
@@ -22,7 +22,7 @@ public class Robot {
     private int destination_floor;
     private IMailPool mailPool;
     private boolean receivedDispatch;
-    private boolean strong;
+    private boolean strong; // not this one.
     
     private MailItem deliveryItem;
     
