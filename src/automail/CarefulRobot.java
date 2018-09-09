@@ -19,12 +19,13 @@ public class CarefulRobot extends Robot{
     public CarefulRobot(IMailDelivery delivery, IMailPool mailPool) {
         super(delivery, mailPool, true);
     }
-    
+
     @Override
     public void moveTowards(int destination) throws FragileItemBrokenException {
         if(careful){
             setCurrent_floor(getCurrent_floor());
             careful = false;
+            return;
         }
         if(getCurrent_floor() < destination){
             setCurrent_floor(getCurrent_floor() + 1);
