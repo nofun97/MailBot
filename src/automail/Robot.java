@@ -10,7 +10,7 @@ import java.util.TreeMap;
 /**
  * The robot delivers mail!
  */
-public class Robot {
+public abstract class Robot implements RobotBehaviour{
 
 	StorageTube tube;
     IMailDelivery delivery;
