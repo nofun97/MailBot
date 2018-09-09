@@ -10,16 +10,16 @@ import java.util.TreeMap;
 /**
  * The robot delivers mail!
  */
-public abstract class Robot implements RobotBehaviour{
+public class Robot {
     // we need extract the standard and weak robot, making four more new classes, make this class as abstract class.
 	StorageTube tube;
     IMailDelivery delivery;
     protected final String id;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
-    public RobotState currentState;
-    private int currentFloor;
-    private int destinationFloor;
+    public RobotState current_state;
+    private int current_floor;
+    private int destination_floor;
     private IMailPool mailPool;
     private boolean receivedDispatch;
     private boolean strong; // not this one.
@@ -40,9 +40,9 @@ public abstract class Robot implements RobotBehaviour{
     public Robot(IMailDelivery delivery, IMailPool mailPool,
                      boolean strong){
     	id = "R" + hashCode();
-        // currentState = RobotState.WAITING;
-    	currentState = RobotState.RETURNING;
-        currentFloor = Building.MAILROOM_LOCATION;
+        // current_state = RobotState.WAITING;
+    	current_state = RobotState.RETURNING;
+        current_floor = Building.MAILROOM_LOCATION;
         tube = new StorageTube();
         this.delivery = delivery;
         this.mailPool = mailPool;
@@ -64,11 +64,11 @@ public abstract class Robot implements RobotBehaviour{
      * @throws ExcessiveDeliveryException if robot delivers more than the capacity of the tube without refilling
      */
     public void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException {    	
-    	switch(currentState) {
+    	switch(current_state) {
     		/** This state is triggered when the robot is returning to the mailroom after a delivery */
     		case RETURNING:
     			/** If its current position is at the mailroom, then the robot should change state */
-                if(currentFloor == Building.MAILROOM_LOCATION){
+                if(current_floor == Building.MAILROOM_LOCATION){
                 	while(!tube.isEmpty()) {
                 		MailItem mailItem = tube.pop();
                 		mailPool.addToPool(mailItem);
@@ -93,7 +93,7 @@ public abstract class Robot implements RobotBehaviour{
                 }
                 break;
     		case DELIVERING:
-    			if(currentFloor == destinationFloor){ // If already here drop off either way
+    			if(current_floor == destination_floor){ // If already here drop off either way
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(deliveryItem);
                     deliveryCounter++;
@@ -111,7 +111,7 @@ public abstract class Robot implements RobotBehaviour{
                     }
     			} else {
 	        		/** The robot is not at the destination yet, move towards it! */
-	                moveTowards(destinationFloor);
+	                moveTowards(destination_floor);
     			}
                 break;
     	}
@@ -125,7 +125,7 @@ public abstract class Robot implements RobotBehaviour{
         deliveryItem = tube.pop();
         if (!strong && deliveryItem.weight > 2000) throw new ItemTooHeavyException(); 
         /** Set the destination floor */
-        destinationFloor = deliveryItem.getDestFloor();
+        destination_floor = deliveryItem.getDestFloor();
     }
 
     /**
@@ -134,11 +134,11 @@ public abstract class Robot implements RobotBehaviour{
      */
     private void moveTowards(int destination) throws FragileItemBrokenException {
         if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
-        if(currentFloor < destination){
-            currentFloor++;
+        if(current_floor < destination){
+            current_floor++;
         }
         else{
-            currentFloor--;
+            current_floor--;
         }
     }
     
@@ -151,10 +151,10 @@ public abstract class Robot implements RobotBehaviour{
      * @param nextState the state to which the robot is transitioning
      */
     private void changeState(RobotState nextState){
-    	if (currentState != nextState) {
-            System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), currentState, nextState);
+    	if (current_state != nextState) {
+            System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
     	}
-    	currentState = nextState;
+    	current_state = nextState;
     	if(nextState == RobotState.DELIVERING){
             System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), deliveryItem.toString());
     	}
