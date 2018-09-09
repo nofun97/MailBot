@@ -6,6 +6,9 @@ import exceptions.ItemTooHeavyException;
 import strategies.IMailPool;
 
 public class CarefulRobot extends Robot{
+
+    private boolean careful = true;
+
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
@@ -69,6 +72,7 @@ public class CarefulRobot extends Robot{
                 } else {
                     /** The robot is not at the destination yet, move towards it! */
                     moveTowards(getDestination_floor());
+                    changeState(RobotState.WAITING);
                 }
                 break;
         }
