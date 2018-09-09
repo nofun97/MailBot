@@ -32,18 +32,17 @@ public abstract class Robot implements RobotBehaviour {
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
-     * @param behaviour governs selection of mail items for delivery and behaviour on priority arrivals
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
      * @param strong is whether the robot can carry heavy items
      */
     public Robot(IMailDelivery delivery, IMailPool mailPool,
-                     boolean strong){
+                     boolean strong, int capacity){
     	id = "R" + hashCode();
         // current_state = RobotState.WAITING;
     	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
-        tube = new StorageTube();
+        tube = new StorageTube(capacity);
         this.delivery = delivery;
         this.mailPool = mailPool;
         this.receivedDispatch = false;
