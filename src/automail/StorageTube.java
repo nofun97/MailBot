@@ -20,6 +20,10 @@ public class StorageTube {
         this.tube = new Stack<MailItem>();
     }
 
+    public StorageTube(StorageTube tube) {
+        this.tube = new Stack<MailItem>();
+        tubeSize = tube.getTubeSize();
+    }
     /**
      * @return if the storage tube is full
      */
@@ -49,10 +53,12 @@ public class StorageTube {
     public void addItem(MailItem item) throws TubeFullException, FragileItemBrokenException {
         if(tube.size() < tubeSize){
         	if (tube.isEmpty()) {
-        		tube.add(item);
-        	} else if (item.getFragile() || tube.peek().getFragile()) {
-        		throw new FragileItemBrokenException();
-        	} else {
+                tube.add(item);
+            }
+//        	} else if (item.getFragile() || tube.peek().getFragile()) {
+//        		throw new FragileItemBrokenException();
+//        	} else {
+            else {
         		tube.add(item);
         	}
         } else {

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class Simulation {
 
-	private enum RobotType { Big, Careful, Standard, Weak };
+	public enum RobotType { Big, Careful, Standard, Weak };
 	
 	
     /** Constant for the mail generator */
@@ -30,6 +30,8 @@ public class Simulation {
 
     private static ArrayList<MailItem> MAIL_DELIVERED;
     private static double total_score = 0;
+
+    public List<RobotType> robotTypes;
 
     public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
     	Properties automailProperties = new Properties();
@@ -104,7 +106,7 @@ public class Simulation {
             /* priority = */ mailGenerator.step();
             try {
                 automail.mailPool.step();
-				for (int i=0; i<3; i++) automail.robot[i].step();
+				for (int i=0; i<robotTypes.size(); i++) automail.robot[i].step();
 			} catch (ExcessiveDeliveryException|ItemTooHeavyException|FragileItemBrokenException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");
