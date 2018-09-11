@@ -75,34 +75,36 @@ public class MyMailPool implements IMailPool {
 	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
 		StorageTube tube = robot.getTube();
 		StorageTube temp = new StorageTube(tube);
+
 		try { // Get as many items as available or as fit
 
-		        if (robot instanceof CarefulRobot){
-                    while(temp.getSize() < robot.getMaxItems() && !fragilePool.isEmpty() ) {
-                        Item item = fragilePool.remove();
-                        temp.addItem(item.mailItem);
-                    }
-                } else if (robot.isStrong()) {
-					while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty() ) {
-						Item item = pool.remove();
-						if (!item.heavy) lightCount--;
+			if (robot instanceof CarefulRobot){
+				while(temp.getSize() < robot.getMaxItems() && !fragilePool.isEmpty() ) {
+					Item item = fragilePool.remove();
+					temp.addItem(item.mailItem);
+				}
+			} else if (robot.isStrong()) {
+				while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty() ) {
+					Item item = pool.remove();
+					if (!item.heavy) lightCount--;
+					temp.addItem(item.mailItem);
+				}
+			} else {
+				ListIterator<Item> i = pool.listIterator();
+				while(temp.getSize() < robot.getMaxItems() && lightCount > 0) {
+					Item item = i.next();
+					if (!item.heavy) {
 						temp.addItem(item.mailItem);
-					}
-				} else {
-					ListIterator<Item> i = pool.listIterator();
-					while(temp.getSize() < robot.getMaxItems() && lightCount > 0) {
-						Item item = i.next();
-						if (!item.heavy) {
-							temp.addItem(item.mailItem);
-							i.remove();
-							lightCount--;
-						}
+						i.remove();
+						lightCount--;
 					}
 				}
-				if (temp.getSize() > 0) {
-					while (!temp.isEmpty()) tube.addItem(temp.pop());
-					robot.dispatch();
-				}
+			}
+			if (temp.getSize() > 0) {
+				while (!temp.isEmpty()) tube.addItem(temp.pop());
+				robot.dispatch();
+			}
+
 		}
 		catch(TubeFullException e){
 			e.printStackTrace();

@@ -52,15 +52,7 @@ public class StorageTube {
      */
     public void addItem(MailItem item) throws TubeFullException, FragileItemBrokenException {
         if(tube.size() < tubeSize){
-        	if (tube.isEmpty()) {
-                tube.add(item);
-            }
-//        	} else if (item.getFragile() || tube.peek().getFragile()) {
-//        		throw new FragileItemBrokenException();
-//        	} else {
-            else {
-        		tube.add(item);
-        	}
+        	tube.add(item);
         } else {
             throw new TubeFullException();
         }

@@ -28,7 +28,7 @@ public class Automail {
         /** Initialize the RobotAction */
 
     	/** Initialize robots */
-    	robot = new Robot[robotsToMake.size()];
+    	robot = new RobotBehaviour[robotsToMake.size()];
         for (int i = 0; i < robotsToMake.size(); i++) {
             robot[i] = makeRobot(robotsToMake.get(i), mailPool, delivery);
         }

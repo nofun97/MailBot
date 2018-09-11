@@ -49,7 +49,7 @@ public abstract class Robot implements RobotBehaviour {
         this.receivedDispatch = false;
         this.strong = strong;
         this.deliveryCounter = 0;
-        //maxItems = 4;
+        maxItems = 4;
     }
     
     public void dispatch() {

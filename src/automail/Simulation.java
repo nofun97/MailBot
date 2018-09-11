@@ -94,7 +94,7 @@ public class Simulation {
         System.out.printf("Seed: %s%n", seed == null ? "null" : seed.toString());
         Automail automail = new Automail(mailPool, new ReportDelivery(), robotTypes);
         MailGenerator mailGenerator = new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
-        
+
         /** Initiate all the mail */
         mailGenerator.generateAllMail();
         // PriorityMailItem priority;  // Not used in this version
