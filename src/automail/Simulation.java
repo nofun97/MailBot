@@ -1,9 +1,6 @@
 package automail;
 
-import exceptions.ExcessiveDeliveryException;
-import exceptions.ItemTooHeavyException;
-import exceptions.MailAlreadyDeliveredException;
-import exceptions.FragileItemBrokenException;
+import exceptions.*;
 import strategies.Automail;
 import strategies.IMailPool;
 
@@ -33,7 +30,7 @@ public class Simulation {
 
     public List<RobotType> robotTypes;
 
-    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvalidRobotTypeException {
     	Properties automailProperties = new Properties();
 		// Default properties
     	// automailProperties.setProperty("Robots", "Big,Careful,Standard,Weak");
@@ -95,7 +92,7 @@ public class Simulation {
         }
         Integer seed = seedMap.get(true);
         System.out.printf("Seed: %s%n", seed == null ? "null" : seed.toString());
-        Automail automail = new Automail(mailPool, new ReportDelivery());
+        Automail automail = new Automail(mailPool, new ReportDelivery(), robotTypes);
         MailGenerator mailGenerator = new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
         
         /** Initiate all the mail */
