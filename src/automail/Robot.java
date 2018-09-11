@@ -3,6 +3,7 @@ package automail;
 import exceptions.ExcessiveDeliveryException;
 import exceptions.ItemTooHeavyException;
 import exceptions.FragileItemBrokenException;
+import exceptions.NoValidRobotsAvailableException;
 import strategies.IMailPool;
 import java.util.Map;
 import java.util.TreeMap;
@@ -64,7 +65,7 @@ public abstract class Robot implements RobotBehaviour {
      * This is called on every time step
      * @throws ExcessiveDeliveryException if robot delivers more than the capacity of the tube without refilling
      */
-    public void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException {    	
+    public void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException, NoValidRobotsAvailableException {
     	switch(current_state) {
     		/** This state is triggered when the robot is returning to the mailroom after a delivery */
     		case RETURNING:

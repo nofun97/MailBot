@@ -30,7 +30,9 @@ public class Simulation {
 
     public List<RobotType> robotTypes;
 
-    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, InvalidRobotTypeException {
+    public static void main(String[] args) throws IOException,
+			InstantiationException, IllegalAccessException,
+			ClassNotFoundException, InvalidRobotTypeException, NoValidRobotsAvailableException {
     	Properties automailProperties = new Properties();
 		// Default properties
     	// automailProperties.setProperty("Robots", "Big,Careful,Standard,Weak");
@@ -104,7 +106,7 @@ public class Simulation {
             try {
                 automail.mailPool.step();
 				for (int i=0; i<robotTypes.size(); i++) automail.robot[i].step();
-			} catch (ExcessiveDeliveryException|ItemTooHeavyException|FragileItemBrokenException e) {
+			} catch (ExcessiveDeliveryException|ItemTooHeavyException|FragileItemBrokenException|NoValidRobotsAvailableException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");
 				System.exit(0);

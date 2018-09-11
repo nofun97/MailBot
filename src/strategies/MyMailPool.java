@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import java.util.function.Consumer;
 
 import automail.*;
+import exceptions.NoValidRobotsAvailableException;
 import exceptions.TubeFullException;
 import exceptions.FragileItemBrokenException;
 
@@ -24,7 +25,10 @@ public class MyMailPool implements IMailPool {
 			this.mailItem = mailItem;
 		}
 	}
-	
+
+	private boolean carefulRobotExists = false;
+	private boolean strongRobotExists = false;
+
 	public class ItemComparator implements Comparator<Item> {
 		@Override
 		public int compare(Item i1, Item i2) {
@@ -55,15 +59,22 @@ public class MyMailPool implements IMailPool {
 		fragilePool = new LinkedList<>();
 	}
 
-	public void addToPool(MailItem mailItem) {
+	public void addToPool(MailItem mailItem) throws NoValidRobotsAvailableException {
 		Item item = new Item(mailItem);
         if (mailItem.getFragile()){
+        	// checking if there is careful robot to deliver fragile items
+        	if (!carefulRobotExists) throw new NoValidRobotsAvailableException("Careful");
             fragilePool.add(item);
             fragilePool.sort(new ItemComparator());
             return;
         }
         pool.add(item);
-        if (!item.heavy) lightCount++;
+        if (!item.heavy) {
+        	lightCount++;
+		} else if (item.heavy && !strongRobotExists){
+        	// checking if there is strong robot to deliver heavy items
+        	throw new NoValidRobotsAvailableException("Strong");
+		}
         pool.sort(new ItemComparator());
 	}
 	
@@ -79,11 +90,14 @@ public class MyMailPool implements IMailPool {
 		try { // Get as many items as available or as fit
 
 			if (robot instanceof CarefulRobot){
-				while(temp.getSize() < robot.getMaxItems() && !fragilePool.isEmpty() ) {
+				while(temp.getSize() < ((CarefulRobot) robot).MAX_FRAGILE_ITEMS
+						&& !fragilePool.isEmpty() ) {
 					Item item = fragilePool.remove();
 					temp.addItem(item.mailItem);
 				}
-			} else if (robot.isStrong()) {
+			}
+
+			if (robot.isStrong()) {
 				while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty() ) {
 					Item item = pool.remove();
 					if (!item.heavy) lightCount--;
@@ -113,8 +127,12 @@ public class MyMailPool implements IMailPool {
 
 	@Override
 	public void registerWaiting(Robot robot) { // assumes won't be there
+
+		// checking if necessary robot types exists in the lineup
+		if (robot instanceof CarefulRobot) carefulRobotExists = true;
 		if (robot.isStrong()) {
-			robots.add(robot); 
+			robots.add(robot);
+			strongRobotExists = true;
 		} else {
 			robots.addLast(robot); // weak robot last as want more efficient delivery with highest priorities
 		}

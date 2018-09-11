@@ -2,6 +2,7 @@ package automail;
 
 import java.util.*;
 
+import exceptions.NoValidRobotsAvailableException;
 import strategies.IMailPool;
 
 /**
@@ -136,7 +137,7 @@ public class MailGenerator {
      * While there are steps left, create a new mail item to deliver
      * @return Priority
      */
-    public PriorityMailItem step(){
+    public PriorityMailItem step() throws NoValidRobotsAvailableException {
     	PriorityMailItem priority = null;
     	// Check if there are any mail to create
         if(this.allMail.containsKey(Clock.Time())){

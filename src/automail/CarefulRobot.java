@@ -6,7 +6,7 @@ import strategies.IMailPool;
 public class CarefulRobot extends Robot{
 
     private boolean isCareful = true;
-
+    public final int MAX_FRAGILE_ITEMS = 1;
     /**
      * Initiates the robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
@@ -21,7 +21,6 @@ public class CarefulRobot extends Robot{
     @Override
     public void moveTowards(int destination) throws FragileItemBrokenException {
         if(isCareful){
-            setCurrent_floor(getCurrent_floor());
             isCareful = false;
             return;
         }
