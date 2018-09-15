@@ -13,7 +13,8 @@ public class Automail {
 	      
     public DelivererBehaviour[] robot;
     public IMailPool mailPool;
-    // Can't handle more than packages heavier than the weak robot limit
+
+    // Can't handle packages heavier than the weak robot limit
     public static final boolean WEAK= false;
 
     // Can handle packages of any weight
