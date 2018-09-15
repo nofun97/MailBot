@@ -5,7 +5,7 @@ import exceptions.FragileItemBrokenException;
 import exceptions.ItemTooHeavyException;
 import exceptions.NoValidRobotsAvailableException;
 
-public interface RobotBehaviour {
+public interface DelivererBehaviour {
     void dispatch();
     void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException, NoValidRobotsAvailableException;
     void setRoute() throws ItemTooHeavyException;

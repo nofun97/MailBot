@@ -11,7 +11,7 @@ import java.util.TreeMap;
 /**
  * The robot delivers mail!
  */
-public abstract class Robot implements RobotBehaviour {
+public abstract class Robot implements DelivererBehaviour {
 
     // we need extract the standard and weak robot, making four more new classes, make this class as abstract class.
 	StorageTube tube;
@@ -19,6 +19,7 @@ public abstract class Robot implements RobotBehaviour {
     protected final String id;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
+    public static final int WEAK_ROBOT_MAX_WEIGHT = 2000;
     public RobotState current_state;
     private int current_floor;
     private int destination_floor;
@@ -125,7 +126,7 @@ public abstract class Robot implements RobotBehaviour {
     public void setRoute() throws ItemTooHeavyException{
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
-        if (!strong && deliveryItem.weight > 2000) throw new ItemTooHeavyException(); 
+        if (!strong && deliveryItem.weight > WEAK_ROBOT_MAX_WEIGHT) throw new ItemTooHeavyException();
         /** Set the destination floor */
         destination_floor = deliveryItem.getDestFloor();
     }

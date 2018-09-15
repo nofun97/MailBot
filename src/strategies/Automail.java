@@ -7,36 +7,32 @@ import java.util.List;
 
 public class Automail {
 	      
-    public RobotBehaviour[] robot;
+    public DelivererBehaviour[] robot;
     public IMailPool mailPool;
-    public final boolean weak = false;  // Can't handle more than 2000 grams
-    public final boolean strong = true; // Can handle any weight that arrives
+    // Can't handle more than packages heavier than the weak robot limit
+    public static final boolean WEAK= false;
 
-    // at
-    // the
-    // building
-
+    // Can handle packages of any weight
+    public static final boolean STRONG = true;
 
     public Automail(IMailPool mailPool, IMailDelivery delivery,
                     List<Simulation.RobotType> robotsToMake) throws InvalidRobotTypeException {
-    	// Swap between simple provided strategies and your strategies here
     	    	
     	/** Initialize the MailPool */
-    	
     	this.mailPool = mailPool;
-    	
-        /** Initialize the RobotAction */
 
     	/** Initialize robots */
-    	robot = new RobotBehaviour[robotsToMake.size()];
+    	robot = new DelivererBehaviour[robotsToMake.size()];
         for (int i = 0; i < robotsToMake.size(); i++) {
             robot[i] = makeRobot(robotsToMake.get(i), mailPool, delivery);
         }
 
     }
 
-    public RobotBehaviour makeRobot(Simulation.RobotType robotType,
-                                    IMailPool mailPool, IMailDelivery delivery) throws InvalidRobotTypeException {
+    public DelivererBehaviour makeRobot(Simulation.RobotType robotType,
+                                        IMailPool mailPool, IMailDelivery delivery) throws InvalidRobotTypeException {
+
+        // create robots based on the designated type
         switch(robotType){
             case Big:
                 return new BigRobot(delivery, mailPool);

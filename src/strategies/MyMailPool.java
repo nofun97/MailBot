@@ -10,14 +10,34 @@ import exceptions.NoValidRobotsAvailableException;
 import exceptions.TubeFullException;
 import exceptions.FragileItemBrokenException;
 
+/**
+ * The type My mail pool.
+ */
 public class MyMailPool implements IMailPool {
 	private class Item {
+		/**
+		 * The Priority.
+		 */
 		int priority;
+		/**
+		 * The Destination.
+		 */
 		int destination;
+		/**
+		 * The Heavy.
+		 */
 		boolean heavy;
+		/**
+		 * The Mail item.
+		 */
 		MailItem mailItem;
 		// Use stable sort to keep arrival time relative positions
-		
+
+		/**
+		 * Instantiates a new Item.
+		 *
+		 * @param mailItem the mail item
+		 */
 		public Item(MailItem mailItem) {
 			priority = (mailItem instanceof PriorityMailItem) ? ((PriorityMailItem) mailItem).getPriorityLevel() : 1;
 			heavy = mailItem.getWeight() >= 2000;
@@ -29,6 +49,9 @@ public class MyMailPool implements IMailPool {
 	private boolean carefulRobotExists = false;
 	private boolean strongRobotExists = false;
 
+	/**
+	 * The type Item comparator.
+	 */
 	public class ItemComparator implements Comparator<Item> {
 		@Override
 		public int compare(Item i1, Item i2) {
@@ -51,6 +74,9 @@ public class MyMailPool implements IMailPool {
 	private LinkedList<Robot> robots;
 	private int lightCount;
 
+	/**
+	 * Instantiates a new My mail pool.
+	 */
 	public MyMailPool(){
 		// Start empty
 		pool = new LinkedList<Item>();

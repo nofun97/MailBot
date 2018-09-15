@@ -1,5 +1,6 @@
 package automail;
 
+import strategies.Automail;
 import strategies.IMailPool;
 
 public class StandardRobot extends Robot{
@@ -11,6 +12,6 @@ public class StandardRobot extends Robot{
      * @param mailPool is the source of mail items
      */
     public StandardRobot(IMailDelivery delivery, IMailPool mailPool) {
-        super(delivery, mailPool, true);
+        super(delivery, mailPool, Automail.STRONG);
     }
 }

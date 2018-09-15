@@ -3,6 +3,7 @@ package automail;
 import exceptions.ExcessiveDeliveryException;
 import exceptions.FragileItemBrokenException;
 import exceptions.ItemTooHeavyException;
+import strategies.Automail;
 import strategies.IMailPool;
 
 public class BigRobot extends Robot{
@@ -14,7 +15,7 @@ public class BigRobot extends Robot{
      * @param mailPool is the source of mail items
      */
     public BigRobot(IMailDelivery delivery, IMailPool mailPool) {
-        super(delivery, mailPool, true);
+        super(delivery, mailPool, Automail.STRONG);
         setMaxItems(6);
         getTube().setTubeSize(getMaxItems());
     }

@@ -1,5 +1,6 @@
 package automail;
 
+import strategies.Automail;
 import strategies.IMailPool;
 
 public class WeakRobot extends Robot {
@@ -13,6 +14,6 @@ public class WeakRobot extends Robot {
      * @param mailPool is the source of mail items
      */
     public WeakRobot(IMailDelivery delivery, IMailPool mailPool) {
-        super(delivery, mailPool, false);
+        super(delivery, mailPool, Automail.WEAK);
     }
 }

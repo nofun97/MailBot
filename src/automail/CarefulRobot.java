@@ -1,6 +1,7 @@
 package automail;
 
 import exceptions.FragileItemBrokenException;
+import strategies.Automail;
 import strategies.IMailPool;
 
 public class CarefulRobot extends Robot{
@@ -15,7 +16,7 @@ public class CarefulRobot extends Robot{
      * @param mailPool is the source of mail items
      */
     public CarefulRobot(IMailDelivery delivery, IMailPool mailPool) {
-        super(delivery, mailPool, true);
+        super(delivery, mailPool, Automail.STRONG);
     }
 
     @Override
@@ -24,12 +25,6 @@ public class CarefulRobot extends Robot{
             isCareful = false;
             return;
         }
-        if(getCurrent_floor() < destination){
-            setCurrent_floor(getCurrent_floor() + 1);
-            isCareful = true;
-        }
-        else{
-            setCurrent_floor(getCurrent_floor() - 1);
-        }
+        super.moveTowards(destination);
     }
 }
