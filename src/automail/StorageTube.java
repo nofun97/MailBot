@@ -1,6 +1,9 @@
+/**
+ * Project Group 23
+ */
+
 package automail;
 
-import exceptions.FragileItemBrokenException;
 import exceptions.TubeFullException;
 
 import java.util.Stack;
@@ -10,7 +13,11 @@ import java.util.Stack;
  */
 public class StorageTube {
 
-    private int tubeSize = 4;
+    /**
+     * standard maximum tube size
+     */
+    private int maximumTubeSize = 4;
+
     private Stack<MailItem> tube;
 
     /**
@@ -20,15 +27,19 @@ public class StorageTube {
         this.tube = new Stack<MailItem>();
     }
 
-    public StorageTube(StorageTube tube) {
-        this.tube = new Stack<MailItem>();
-        tubeSize = tube.getTubeSize();
+    /**
+     * Constructor for the storage tube based on the desired number of capacity
+     * @param capacity the desired number of capacity
+     */
+    public StorageTube(int capacity){
+        this.tube = new Stack<>();
+        maximumTubeSize = capacity;
     }
     /**
      * @return if the storage tube is full
      */
     public boolean isFull(){
-        return tube.size() == tubeSize;
+        return tube.size() == maximumTubeSize;
     }
 
     /**
@@ -48,10 +59,11 @@ public class StorageTube {
     /**
      * Add an item to the tube
      * @param item The item being added
-     * @throws TubeFullException thrown if an item is added which exceeds the capacity
+     * @throws TubeFullException thrown if an item is added which
+     * exceeds the capacity
      */
-    public void addItem(MailItem item) throws TubeFullException, FragileItemBrokenException {
-        if(tube.size() < tubeSize){
+    public void addItem(MailItem item) throws TubeFullException {
+        if(tube.size() < maximumTubeSize){
         	tube.add(item);
         } else {
             throw new TubeFullException();
@@ -70,11 +82,11 @@ public class StorageTube {
         return tube.pop();
     }
 
-    public void setTubeSize(int tubeSize) {
-        this.tubeSize = tubeSize;
+    public void setMaximumTubeSize(int maximumTubeSize) {
+        this.maximumTubeSize = maximumTubeSize;
     }
 
-    public int getTubeSize() {
-        return tubeSize;
+    public int getMaximumTubeSize() {
+        return maximumTubeSize;
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * Project Group 23
+ */
+
 package strategies;
 
 import automail.*;
@@ -16,7 +20,8 @@ public class Automail {
     public static final boolean STRONG = true;
 
     public Automail(IMailPool mailPool, IMailDelivery delivery,
-                    List<Simulation.RobotType> robotsToMake) throws InvalidRobotTypeException {
+                    List<Simulation.RobotType> robotsToMake) throws
+            InvalidRobotTypeException {
     	    	
     	/** Initialize the MailPool */
     	this.mailPool = mailPool;
@@ -30,7 +35,9 @@ public class Automail {
     }
 
     public DelivererBehaviour makeRobot(Simulation.RobotType robotType,
-                                        IMailPool mailPool, IMailDelivery delivery) throws InvalidRobotTypeException {
+                                        IMailPool mailPool,
+                                        IMailDelivery delivery)
+            throws InvalidRobotTypeException {
 
         // create robots based on the designated type
         switch(robotType){

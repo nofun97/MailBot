@@ -1,9 +1,12 @@
+/**
+ * Project Group 23
+ */
+
 package strategies;
 
 import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.ListIterator;
-import java.util.function.Consumer;
 
 import automail.*;
 import exceptions.NoValidRobotsAvailableException;
@@ -11,20 +14,21 @@ import exceptions.TubeFullException;
 import exceptions.FragileItemBrokenException;
 
 /**
- * The type My mail pool.
+ * The strategy implemented to decide the next sets of items for a robot to
+ * deliver
  */
 public class MyMailPool implements IMailPool {
 	private class Item {
 		/**
-		 * The Priority.
+		 * The Priority level of an item.
 		 */
 		int priority;
 		/**
-		 * The Destination.
+		 * The Destination of the item.
 		 */
 		int destination;
 		/**
-		 * The Heavy.
+		 * Whether the item is heavy or not.
 		 */
 		boolean heavy;
 		/**
@@ -39,7 +43,8 @@ public class MyMailPool implements IMailPool {
 		 * @param mailItem the mail item
 		 */
 		public Item(MailItem mailItem) {
-			priority = (mailItem instanceof PriorityMailItem) ? ((PriorityMailItem) mailItem).getPriorityLevel() : 1;
+			priority = (mailItem instanceof PriorityMailItem) ?
+					((PriorityMailItem) mailItem).getPriorityLevel() : 1;
 			heavy = mailItem.getWeight() >= 2000;
 			destination = mailItem.getDestFloor();
 			this.mailItem = mailItem;
@@ -111,11 +116,15 @@ public class MyMailPool implements IMailPool {
 	
 	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
 		StorageTube tube = robot.getTube();
-		StorageTube temp = new StorageTube(tube);
+		StorageTube temp = new StorageTube(tube.getMaximumTubeSize());
 
-		try { // Get as many items as available or as fit
+		// Get as many items as available or as fit
+		try {
 
+			// adding fragile items to careful robot
 			if (robot instanceof CarefulRobot){
+
+				// only adding a certain number of fragile items
 				while(temp.getSize() < ((CarefulRobot) robot).MAX_FRAGILE_ITEMS
 						&& !fragilePool.isEmpty() ) {
 					Item item = fragilePool.remove();
@@ -123,8 +132,9 @@ public class MyMailPool implements IMailPool {
 				}
 			}
 
+			// giving certain of robots its corresponding items
 			if (robot.isStrong()) {
-				while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty() ) {
+				while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty()) {
 					Item item = pool.remove();
 					if (!item.heavy) lightCount--;
 					temp.addItem(item.mailItem);
@@ -152,7 +162,7 @@ public class MyMailPool implements IMailPool {
 	}
 
 	@Override
-	public void registerWaiting(Robot robot) { // assumes won't be there
+	public void registerWaiting(Robot robot) {
 
 		// checking if necessary robot types exists in the lineup
 		if (robot instanceof CarefulRobot) carefulRobotExists = true;
@@ -160,7 +170,11 @@ public class MyMailPool implements IMailPool {
 			robots.add(robot);
 			strongRobotExists = true;
 		} else {
-			robots.addLast(robot); // weak robot last as want more efficient delivery with highest priorities
+			/**
+			 *  weak robot last as want more efficient delivery with highest
+			 *  priorities
+			 */
+			robots.addLast(robot);
 		}
 	}
 

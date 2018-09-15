@@ -32,7 +32,8 @@ public class Simulation {
 
     public static void main(String[] args) throws IOException,
 			InstantiationException, IllegalAccessException,
-			ClassNotFoundException, InvalidRobotTypeException, NoValidRobotsAvailableException {
+			ClassNotFoundException, InvalidRobotTypeException,
+			NoValidRobotsAvailableException {
     	Properties automailProperties = new Properties();
 		// Default properties
     	// automailProperties.setProperty("Robots", "Big,Careful,Standard,Weak");
@@ -55,24 +56,31 @@ public class Simulation {
 		}
 		// MailPool
 		String mailPoolName = automailProperties.getProperty("MailPool");
-		IMailPool mailPool = (IMailPool) Class.forName(mailPoolName).newInstance();
+		IMailPool mailPool = (IMailPool) Class.forName(mailPoolName).
+				newInstance();
 		//Seed
 		String seedProp = automailProperties.getProperty("Seed");
 		// Floors
-		Building.FLOORS = Integer.parseInt(automailProperties.getProperty("Floors"));
+		Building.FLOORS = Integer.parseInt
+				(automailProperties.getProperty("Floors"));
         System.out.printf("Floors: %5d%n", Building.FLOORS);
         // Fragile
-        boolean fragile = Boolean.parseBoolean(automailProperties.getProperty("Fragile"));
+        boolean fragile = Boolean.parseBoolean
+				(automailProperties.getProperty("Fragile"));
         System.out.printf("Fragile: %5b%n", fragile);
 		// Mail_to_Create
-		MAIL_TO_CREATE = Integer.parseInt(automailProperties.getProperty("Mail_to_Create"));
+		MAIL_TO_CREATE = Integer.parseInt
+				(automailProperties.getProperty("Mail_to_Create"));
         System.out.printf("Mail_to_Create: %5d%n", MAIL_TO_CREATE);
 		// Last_Delivery_Time
-		Clock.LAST_DELIVERY_TIME = Integer.parseInt(automailProperties.getProperty("Last_Delivery_Time"));
-        System.out.printf("Last_Delivery_Time: %5d%n", Clock.LAST_DELIVERY_TIME);
+		Clock.LAST_DELIVERY_TIME = Integer.parseInt
+				(automailProperties.getProperty("Last_Delivery_Time"));
+        System.out.printf
+				("Last_Delivery_Time: %5d%n", Clock.LAST_DELIVERY_TIME);
 		// Robots
 		String robotsProp = automailProperties.getProperty("Robots");
-		List<RobotType> robotTypes = Stream.of(robotsProp.split(",")).map(RobotType::valueOf).collect(Collectors.toList());
+		List<RobotType> robotTypes = Stream.of(robotsProp.split(",")).
+				map(RobotType::valueOf).collect(Collectors.toList());
 		System.out.print("Robots: "); System.out.println(robotTypes);
 
 		// End properties
@@ -93,9 +101,12 @@ public class Simulation {
         	seedMap.put(true, Integer.parseInt(args[0]));
         }
         Integer seed = seedMap.get(true);
-        System.out.printf("Seed: %s%n", seed == null ? "null" : seed.toString());
-        Automail automail = new Automail(mailPool, new ReportDelivery(), robotTypes);
-        MailGenerator mailGenerator = new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
+        System.out.printf
+				("Seed: %s%n", seed == null ? "null" : seed.toString());
+        Automail automail = new Automail
+				(mailPool, new ReportDelivery(), robotTypes);
+        MailGenerator mailGenerator = new MailGenerator
+				(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
 
         /** Initiate all the mail */
         mailGenerator.generateAllMail();
@@ -106,7 +117,10 @@ public class Simulation {
             try {
                 automail.mailPool.step();
 				for (int i=0; i<robotTypes.size(); i++) automail.robot[i].step();
-			} catch (ExcessiveDeliveryException|ItemTooHeavyException|FragileItemBrokenException|NoValidRobotsAvailableException e) {
+			} catch (ExcessiveDeliveryException|
+					ItemTooHeavyException|
+					FragileItemBrokenException|
+					NoValidRobotsAvailableException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");
 				System.exit(0);
@@ -121,7 +135,8 @@ public class Simulation {
     	/** Confirm the delivery and calculate the total score */
     	public void deliver(MailItem deliveryItem){
     		if(!MAIL_DELIVERED.contains(deliveryItem)){
-                System.out.printf("T: %3d > Delivered [%s]%n", Clock.Time(), deliveryItem.toString());
+                System.out.printf("T: %3d > Delivered [%s]%n",
+						Clock.Time(), deliveryItem.toString());
     			MAIL_DELIVERED.add(deliveryItem);
     			// Calculate delivery score
     			total_score += calculateDeliveryScore(deliveryItem);
@@ -140,12 +155,14 @@ public class Simulation {
     private static double calculateDeliveryScore(MailItem deliveryItem) {
     	// Penalty for longer delivery times
     	final double penalty = 1.2;
-    	double priority_weight = 0;
-        // Take (delivery time - arrivalTime)**penalty * (1+sqrt(priority_weight))
+    	double priorityWeight = 0;
+        // Take (delivery time - arrivalTime)**penalty * (1+sqrt(priorityWeight))
     	if(deliveryItem instanceof PriorityMailItem){
-    		priority_weight = ((PriorityMailItem) deliveryItem).getPriorityLevel();
+    		priorityWeight = ((PriorityMailItem) deliveryItem).
+					getPriorityLevel();
     	}
-        return Math.pow(Clock.Time() - deliveryItem.getArrivalTime(),penalty)*(1+Math.sqrt(priority_weight));
+        return Math.pow(Clock.Time() - deliveryItem.getArrivalTime(),penalty)*
+				(1+Math.sqrt(priorityWeight));
     }
 
     public static void printResults(){
