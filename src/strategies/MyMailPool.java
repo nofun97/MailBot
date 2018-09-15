@@ -111,17 +111,19 @@ public class MyMailPool implements IMailPool {
 	
 	@Override
 	public void step() throws FragileItemBrokenException {
-		for (Robot robot: (Iterable<Robot>) robots::iterator) { fillStorageTube(robot); }
+		for (Robot robot: (Iterable<Robot>) robots::iterator) {
+			fillStorageTube(robot);
+		}
 	}
 	
-	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
+	private void fillStorageTube(Robot robot) throws FragileItemBrokenException{
 		StorageTube tube = robot.getTube();
 		StorageTube temp = new StorageTube(tube.getMaximumTubeSize());
 
 		// Get as many items as available or as fit
 		try {
 
-			// adding fragile items to careful robot
+			// adding fragile items to careful robots
 			if (robot instanceof CarefulRobot){
 
 				// only adding a certain number of fragile items
@@ -164,14 +166,14 @@ public class MyMailPool implements IMailPool {
 	@Override
 	public void registerWaiting(Robot robot) {
 
-		// checking if necessary robot types exists in the lineup
+		// checking if necessary robots types exists in the lineup
 		if (robot instanceof CarefulRobot) carefulRobotExists = true;
 		if (robot.isStrong()) {
 			robots.add(robot);
 			strongRobotExists = true;
 		} else {
 			/**
-			 *  weak robot last as want more efficient delivery with highest
+			 *  weak robots last as want more efficient delivery with highest
 			 *  priorities
 			 */
 			robots.addLast(robot);

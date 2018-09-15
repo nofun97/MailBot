@@ -26,12 +26,14 @@ public interface IMailPool {
 	void step() throws FragileItemBrokenException;
 
 	/**
-     * @param robot refers to a robot which has arrived back ready for more mailItems to deliver
+     * @param robot refers to a robot which has arrived back ready for more
+	 *              mailItems to deliver
      */	
 	void registerWaiting(Robot robot);
     
 	/**
-     * @param robot refers to a robot which has left (with more mailItems to deliver)
+     * @param robot refers to a robot which has left (with more mailItems to
+	 *              deliver)
      */	
 	void deregisterWaiting(Robot robot);
 }

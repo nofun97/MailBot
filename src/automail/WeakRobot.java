@@ -7,10 +7,14 @@ package automail;
 import strategies.Automail;
 import strategies.IMailPool;
 
+
+/**
+ * The type Weak robot.
+ */
 public class WeakRobot extends Robot {
 
     /**
-     * Initiates the robot's location at the start to be at the mailroom
+     * Initiates the Robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
      *
      * @param delivery governs the final delivery

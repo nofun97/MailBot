@@ -28,8 +28,6 @@ public class Simulation {
     private static ArrayList<MailItem> MAIL_DELIVERED;
     private static double total_score = 0;
 
-    public List<RobotType> robotTypes;
-
     public static void main(String[] args) throws IOException,
 			InstantiationException, IllegalAccessException,
 			ClassNotFoundException, InvalidRobotTypeException,
@@ -54,10 +52,7 @@ public class Simulation {
 	                inStream.close();
 	            }
 		}
-		// MailPool
-		String mailPoolName = automailProperties.getProperty("MailPool");
-		IMailPool mailPool = (IMailPool) Class.forName(mailPoolName).
-				newInstance();
+
 		//Seed
 		String seedProp = automailProperties.getProperty("Seed");
 		// Floors
@@ -103,10 +98,14 @@ public class Simulation {
         Integer seed = seedMap.get(true);
         System.out.printf
 				("Seed: %s%n", seed == null ? "null" : seed.toString());
-        Automail automail = new Automail
-				(mailPool, new ReportDelivery(), robotTypes);
+
+		// MailPool
+		String mailPoolName = automailProperties.getProperty("MailPool");
+        Automail automail = new Automail(new ReportDelivery(), mailPoolName,
+				robotTypes);
+
         MailGenerator mailGenerator = new MailGenerator
-				(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
+				(MAIL_TO_CREATE, automail.MAIL_POOL, seedMap, fragile);
 
         /** Initiate all the mail */
         mailGenerator.generateAllMail();
@@ -115,8 +114,8 @@ public class Simulation {
         	//System.out.println("-- Step: "+Clock.Time());
             /* priority = */ mailGenerator.step();
             try {
-                automail.mailPool.step();
-				for (int i=0; i<robotTypes.size(); i++) automail.robot[i].step();
+                automail.MAIL_POOL.step();
+				for (int i=0; i<robotTypes.size(); i++) automail.ROBOTS[i].step();
 			} catch (ExcessiveDeliveryException|
 					ItemTooHeavyException|
 					FragileItemBrokenException|
