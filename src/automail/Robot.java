@@ -37,12 +37,6 @@ public abstract class Robot implements DelivererBehaviour {
      */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
 
-
-    /**
-     * The maximum weight a weak robot can carry.
-     */
-    public static final int WEAK_ROBOT_MAX_WEIGHT = 2000;
-
     /**
      * the current state of a robot
      */
@@ -216,7 +210,7 @@ public abstract class Robot implements DelivererBehaviour {
     public void setRoute() throws ItemTooHeavyException{
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
-        if (!strong && deliveryItem.weight > WEAK_ROBOT_MAX_WEIGHT)
+        if (!strong && deliveryItem.weight > WeakRobot.WEAK_ROBOT_MAX_WEIGHT)
             throw new ItemTooHeavyException();
         /** Set the destination floor */
         destinationFloor = deliveryItem.getDestFloor();

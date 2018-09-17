@@ -21,6 +21,7 @@ public interface DelivererBehaviour {
 
     /**
      * The steps of a deliverer based on the state that the deliverer have
+     *
      * @throws ExcessiveDeliveryException it is thrown if the  deliverer
      * delivers more item that it should
      *
@@ -45,7 +46,7 @@ public interface DelivererBehaviour {
     void setRoute() throws ItemTooHeavyException;
 
     /**
-     * For the robot to move towards to a certain floor on in the building
+     * For the deliverers to move towards to a certain floor on in the building
      *
      * @param destination the destination floor
      * @throws FragileItemBrokenException it is thrown if the deliverer can

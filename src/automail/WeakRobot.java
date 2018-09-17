@@ -14,6 +14,11 @@ import strategies.IMailPool;
 public class WeakRobot extends Robot {
 
     /**
+     * The maximum weight a weak robot can carry.
+     */
+    public static final int WEAK_ROBOT_MAX_WEIGHT = 2000;
+
+    /**
      * Initiates the Robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
      *
