@@ -43,7 +43,6 @@ public class CarefulRobot extends Robot{
         // A Careful Robot moves slower
         if(delaying){
             delaying = false;
-            return;
         } else {
             super.moveTowards(destination);
             delaying = true;
