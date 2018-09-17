@@ -93,7 +93,8 @@ public class MyMailPool implements IMailPool {
 		robots = new LinkedList<Robot>();
 	}
 
-	public void addToPool(MailItem mailItem) throws NoValidRobotsAvailableException {
+	public void addToPool(MailItem mailItem)
+			throws NoValidRobotsAvailableException {
 		Item item = new Item(mailItem);
         if (mailItem.getFragile() && !carefulRobotExists){
         	// checking if there is careful robot to deliver fragile items

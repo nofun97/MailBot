@@ -167,6 +167,7 @@ public abstract class Robot implements DelivererBehaviour {
         			mailPool.deregisterWaiting(this);
                 	changeState(RobotState.DELIVERING);
                 }
+
                 break;
     		case DELIVERING:
     		    // reaching the destination floor
@@ -221,10 +222,12 @@ public abstract class Robot implements DelivererBehaviour {
      * @param destination the floor towards which the robot is moving
      */
     public void moveTowards(int destination) throws FragileItemBrokenException {
+
+
         // preventing robots that are not certain types to carry fragile items
-        if (deliveryItem != null && deliveryItem.getFragile() &&
-                !(this instanceof CarefulRobot) ||
-                !tube.isEmpty() && tube.peek().getFragile())
+        if (!(this instanceof CarefulRobot) && ( deliveryItem != null &&
+                deliveryItem.getFragile() ||
+                !tube.isEmpty() && tube.peek().getFragile()))
             throw new FragileItemBrokenException();
         if(currentFloor < destination){
             currentFloor++;

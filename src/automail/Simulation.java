@@ -127,9 +127,9 @@ public class Simulation {
         }
         printResults();
     }
-    
+
     static class ReportDelivery implements IMailDelivery {
-    	
+
     	/** Confirm the delivery and calculate the total score */
     	public void deliver(MailItem deliveryItem){
     		if(!MAIL_DELIVERED.contains(deliveryItem)){
