@@ -10,24 +10,24 @@ import strategies.IMailPool;
 
 
 /**
- * The type Careful robot.
+ * The type Careful Robots.
  */
 public class CarefulRobot extends Robot{
 
     private boolean delaying = true;
 
     /**
-     * maximum fragile item a careful robot can carry
+     * maximum fragile item a careful Robot can carry
      */
     public final int MAX_FRAGILE_ITEMS = 1;
 
     /**
-     * maximum items a careful robot can carry
+     * maximum items a careful Robot can carry
      */
     public final int CAREFUL_ROBOT_MAX_ITEMS = 3;
 
     /**
-     * Initiates the robot's location at the start to be at the mailroom
+     * Initiates the Robot's location at the start to be at the mailroom
      * also set it to be waiting for mail.
      *
      * @param delivery governs the final delivery
@@ -44,7 +44,9 @@ public class CarefulRobot extends Robot{
         if(delaying){
             delaying = false;
             return;
+        } else {
+            super.moveTowards(destination);
+            delaying = true;
         }
-        super.moveTowards(destination);
     }
 }
