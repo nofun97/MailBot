@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public class Simulation {
 
-	public enum RobotType { Big, Careful, Standard, Weak };
+	public enum RobotType { Big, Careful, Standard, Weak }
 	
 	
     /** Constant for the mail generator */
@@ -116,10 +116,9 @@ public class Simulation {
             try {
                 automail.MAIL_POOL.step();
 				for (int i=0; i<robotTypes.size(); i++) automail.ROBOTS[i].step();
-			} catch (ExcessiveDeliveryException|
-					ItemTooHeavyException|
-					FragileItemBrokenException|
-					NoValidRobotsAvailableException e) {
+			} catch (ExcessiveDeliveryException | ItemTooHeavyException |
+					FragileItemBrokenException | NoValidRobotsAvailableException
+					| TubeFullException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");
 				System.exit(0);

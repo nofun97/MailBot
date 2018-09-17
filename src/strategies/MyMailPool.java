@@ -32,6 +32,10 @@ public class MyMailPool implements IMailPool {
 		 */
 		boolean heavy;
 		/**
+		 * Whether the item is fragile or not
+		 */
+		boolean fragile;
+		/**
 		 * The Mail item.
 		 */
 		MailItem mailItem;
@@ -45,7 +49,8 @@ public class MyMailPool implements IMailPool {
 		public Item(MailItem mailItem) {
 			priority = (mailItem instanceof PriorityMailItem) ?
 					((PriorityMailItem) mailItem).getPriorityLevel() : 1;
-			heavy = mailItem.getWeight() >= 2000;
+			heavy = mailItem.getWeight() >= WeakRobot.WEAK_ROBOT_MAX_WEIGHT;
+			fragile = mailItem.getFragile();
 			destination = mailItem.getDestFloor();
 			this.mailItem = mailItem;
 		}
@@ -75,7 +80,6 @@ public class MyMailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
-	private LinkedList<Item> fragilePool;
 	private LinkedList<Robot> robots;
 	private int lightCount;
 
@@ -87,17 +91,13 @@ public class MyMailPool implements IMailPool {
 		pool = new LinkedList<Item>();
 		lightCount = 0;
 		robots = new LinkedList<Robot>();
-		fragilePool = new LinkedList<>();
 	}
 
 	public void addToPool(MailItem mailItem) throws NoValidRobotsAvailableException {
 		Item item = new Item(mailItem);
-        if (mailItem.getFragile()){
+        if (mailItem.getFragile() && !carefulRobotExists){
         	// checking if there is careful robot to deliver fragile items
-        	if (!carefulRobotExists) throw new NoValidRobotsAvailableException("Careful");
-            fragilePool.add(item);
-            fragilePool.sort(new ItemComparator());
-            return;
+        	throw new NoValidRobotsAvailableException("Careful");
         }
         pool.add(item);
         if (!item.heavy) {
@@ -122,29 +122,29 @@ public class MyMailPool implements IMailPool {
 
 		// Get as many items as available or as fit
 		try {
+			// To iterate through the pool
+			ListIterator<Item> i = pool.listIterator();
 
-			// adding fragile items to careful robots
-			if (robot instanceof CarefulRobot){
+			while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty() &&
+					i.hasNext()){
+				Item item = i.next();
 
-				// only adding a certain number of fragile items
-				while(temp.getSize() < ((CarefulRobot) robot).MAX_FRAGILE_ITEMS
-						&& !fragilePool.isEmpty() ) {
-					Item item = fragilePool.remove();
+				/**
+				 * if item is fragile and the robot is not a certain type
+				 * that can handle it, or if the robot can not carry anymore
+				 * fragile items, it will iterate to the next mail.
+				 */
+				if(item.fragile && (!(robot instanceof CarefulRobot) ||
+						temp.getFragileCount() >=
+						((CarefulRobot) robot).MAX_FRAGILE_ITEMS)) continue;
+
+				// adding certain mails to certain robot
+				if (robot.isStrong()){
 					temp.addItem(item.mailItem);
-				}
-			}
-
-			// giving certain of robots its corresponding items
-			if (robot.isStrong()) {
-				while(temp.getSize() < robot.getMaxItems() && !pool.isEmpty()) {
-					Item item = pool.remove();
 					if (!item.heavy) lightCount--;
-					temp.addItem(item.mailItem);
-				}
-			} else {
-				ListIterator<Item> i = pool.listIterator();
-				while(temp.getSize() < robot.getMaxItems() && lightCount > 0) {
-					Item item = i.next();
+					i.remove();
+				} else {
+					if (lightCount <= 0) break;
 					if (!item.heavy) {
 						temp.addItem(item.mailItem);
 						i.remove();
@@ -152,6 +152,8 @@ public class MyMailPool implements IMailPool {
 					}
 				}
 			}
+
+			// removing from temporary tube and adding to robot's tube
 			if (temp.getSize() > 0) {
 				while (!temp.isEmpty()) tube.addItem(temp.pop());
 				robot.dispatch();

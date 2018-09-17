@@ -9,7 +9,7 @@ import exceptions.TubeFullException;
 import java.util.Stack;
 
 /**
- * The storage tube carried by the robot.
+ * The storage tube carried by the robots.
  */
 public class StorageTube {
 
@@ -17,7 +17,7 @@ public class StorageTube {
      * standard maximum tube size
      */
     private int maximumTubeSize = 4;
-
+    private int fragileCount = 0;
     private Stack<MailItem> tube;
 
     /**
@@ -63,6 +63,7 @@ public class StorageTube {
      * exceeds the capacity
      */
     public void addItem(MailItem item) throws TubeFullException {
+        if (item.getFragile()) fragileCount++;
         if(tube.size() < maximumTubeSize){
         	tube.add(item);
         } else {
@@ -88,5 +89,9 @@ public class StorageTube {
 
     public int getMaximumTubeSize() {
         return maximumTubeSize;
+    }
+
+    public int getFragileCount() {
+        return fragileCount;
     }
 }
