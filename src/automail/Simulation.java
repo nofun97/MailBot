@@ -2,7 +2,6 @@ package automail;
 
 import exceptions.*;
 import strategies.Automail;
-import strategies.IMailPool;
 
 import java.util.stream.Stream;
 import java.io.FileReader;
@@ -117,8 +116,8 @@ public class Simulation {
                 automail.MAIL_POOL.step();
 				for (int i=0; i<robotTypes.size(); i++) automail.ROBOTS[i].step();
 			} catch (ExcessiveDeliveryException | ItemTooHeavyException |
-					FragileItemBrokenException | NoValidRobotsAvailableException
-					| TubeFullException e) {
+					FragileItemBrokenException |
+					NoValidRobotsAvailableException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");
 				System.exit(0);
